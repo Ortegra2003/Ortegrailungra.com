@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barre latérale (Sidebar) - Fichier Unique</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+
+    <style>
+        /* CSS intégré ici */
+
+        :root {
+            --sidebar-width-expanded: 200px; /* Largeur de la barre latérale dépliée */
+            --sidebar-width-collapsed: 80px; /* Largeur de la barre latérale repliée */
+            --bg-color: #f0f2f5; /* Couleur de fond du corps */
+            --sidebar-bg: #000; /* Couleur de fond de la sidebar (noir) */
+            --text-color: #fff; /* Couleur du texte dans la sidebar */
+            --hover-color: #2f3336; /* Couleur au survol des liens */
+            --border-color: #2f3336; /* Couleur de la bordure */
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex; /* Utilisation de flexbox pour aligner la sidebar et le contenu */
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            overflow-x: hidden; /* Empêche le défilement horizontal en cas de dépassement */
+        }
+
+        /* Styles de la barre latérale */
+        .sidebar {
+            width: var(--sidebar-width-expanded); /* Largeur initiale dépliée */
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px; /* Bordure arrondie comme sur l'image */
+            margin: 20px;
+            border: 1px solid var(--border-color);
+            transition: width var(--transition-speed) ease; /* Animation de la largeur */
+            position: relative; /* Pour positionner des éléments à l'intérieur si besoin */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0; /* Empêche la sidebar de se rétrécir */
+        }
+
+        /* Styles pour la barre latérale repliée */
+        .sidebar.collapsed {
+            width: var(--sidebar-width-collapsed); /* Nouvelle largeur quand repliée */
+            padding-left: 10px; /* Ajuster le padding si nécessaire */
+            padding-right: 10px;
+        }
+
+        /* En-tête de la barre latérale avec le bouton toggle */
+        .sidebar-header {
+            display: flex;
+            justify-content: flex-end; /* Aligne le bouton à droite */
+            margin-bottom: 20px;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--hover-color);
+        }
+
+        /* Liste de navigation */
+        .nav-list {
+            list-style: none;
+            flex-grow: 1; /* Permet à la liste de prendre l'espace disponible */
+        }
+
+        .nav-list li {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 12px 15px;
+            border-radius: 10px;
+            transition: background-color var(--transition-speed) ease, padding var(--transition-speed) ease;
+        }
+
+        .nav-link:hover {
+            background-color: var(--hover-color);
+        }
+
+        .nav-link i {
+            font-size: 22px;
+            margin-right: 15px;
+            min-width: 24px; /* S'assure que les icônes ne se chevauchent pas quand le texte disparaît */
+            text-align: center;
+        }
+
+        /* Texte des liens de navigation */
+        .link-text {
+            opacity: 1;
+            transition: opacity var(--transition-speed) ease, width var(--transition-speed) ease;
+            white-space: nowrap; /* Empêche le texte de passer à la ligne */
+            overflow: hidden; /* Cache le texte qui dépasse */
+            width: auto; /* Largeur automatique */
+        }
+
+        /* Styles lorsque la barre latérale est repliée */
+        .sidebar.collapsed .link-text {
+            opacity: 0; /* Rend le texte transparent */
+            width: 0; /* Réduit la largeur du texte */
+            pointer-events: none; /* Empêche le clic sur le texte invisible */
+        }
+
+        /* Ajustement du padding des liens quand la sidebar est repliée pour centrer les icônes */
+        .sidebar.collapsed .nav-link {
+            justify-content: center; /* Centre l'icône horizontalement */
+            padding: 12px 0; /* Réduit le padding pour les icônes */
+        }
+
+        .sidebar.collapsed .nav-link i {
+            margin-right: 0; /* Supprime la marge à droite de l'icône */
+        }
+
+        /* Contenu principal de la page */
+        .main-content {
+            flex-grow: 1; /* Permet au contenu principal de prendre l'espace restant */
+            padding: 40px;
+            transition: margin-left var(--transition-speed) ease; /* Pour décaler si nécessaire */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="mySidebar">
+        <div class="sidebar-header">
+            <button class="toggle-btn" id="toggleBtn">
+                <i class="fas fa-bars"></i> </button>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span class="link-text">Accueil</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-search"></i>
+                    <span class="link-text">Recherche</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-bell"></i>
+                    <span class="link-text">Notifications</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-bookmark"></i>
+                    <span class="link-text">Favoris</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span class="link-text">Paramètres</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Bonjour, Ortegra !</h1>
+        <p>Ceci est le contenu principal de la page. La barre latérale à gauche peut être repliée ou dépliée.</p>
+        <p>Ce code est intégré dans un seul fichier HTML.</p>
+    </div>
+
+    <script>
+        // JavaScript intégré ici
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('mySidebar');
+            const toggleBtn = document.getElementById('toggleBtn');
+
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                // Vous pouvez également changer l'icône du bouton si vous le souhaitez
+                // const icon = toggleBtn.querySelector('i');
+                // if (sidebar.classList.contains('collapsed')) {
+                //     icon.classList.remove('fa-bars');
+                //     icon.classList.add('fa-arrow-right'); // Exemple d'icône pour l'état replié
+                // } else {
+                //     icon.classList.remove('fa-arrow-right');
+                //     icon.classList.add('fa-bars'); // Icône pour l'état déplié
+                // }
+            });
+        });
+    </script>
+</body>
+</html>
